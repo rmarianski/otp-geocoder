@@ -8,6 +8,26 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd">
 
+<!--        <bean id="geocoder" class="org.opentripplanner.geocoder.AlternatingGeocoder">-->
+<!--        	<constructor-arg>-->
+<!--        		<bean class="org.opentripplanner.geocoder.GeocoderStubImpl">-->
+<!--        			<constructor-arg value="40.719991" />-->
+<!--        			<constructor-arg value="-73.99953" />-->
+<!--        			<constructor-arg value="148 Lafayette St,New York,NY,10013" />-->
+<!--        		</bean>-->
+<!--        	</constructor-arg>-->
+<!--        	<constructor-arg>-->
+<!--        		<bean class="org.opentripplanner.geocoder.GeocoderStubImpl">-->
+<!--        			<constructor-arg value="40.705371" />-->
+<!--        			<constructor-arg value="-74.007083" />-->
+<!--        			<constructor-arg value="100 Wall St,New York,NY,10005" />-->
+<!--        		</bean>-->
+<!--        	</constructor-arg>-->
+<!--        </bean>-->
+
+<!--	<bean id="geocoder" class="org.opentripplanner.geocoder.GeocoderStubImpl">-->
+<!--	</bean>-->
+
     <bean id="geocoder" class="org.opentripplanner.geocoder.GeocoderUSCSV">
         <property name="geocoderBaseUrl" value="http://rpc.geocoder.us/service/csv" />
     </bean>
