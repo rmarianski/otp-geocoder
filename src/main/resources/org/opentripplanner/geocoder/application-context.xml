@@ -58,8 +58,12 @@
 		<constructor-arg ref="broadway" />
 	</bean>
 
-	<bean id="geocoder" class="org.opentripplanner.geocoder.GeocoderUSCSV">
+	<bean id="geocoderUSCSV" class="org.opentripplanner.geocoder.GeocoderUSCSV">
 		<property name="geocoderBaseUrl" value="http://rpc.geocoder.us/service/csv" />
+	</bean>
+	
+	<bean id="geocoderServer" class="org.opentripplanner.geocoder.ws.GeocoderServer">
+		<property name="geocoder" ref="geocoderUSCSV" />
 	</bean>
 
 </beans>

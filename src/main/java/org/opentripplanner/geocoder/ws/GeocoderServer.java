@@ -10,18 +10,11 @@ import javax.ws.rs.core.Response;
 
 import org.opentripplanner.geocoder.Geocoder;
 import org.opentripplanner.geocoder.GeocoderResults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.sun.jersey.api.spring.Autowire;
-import com.sun.jersey.api.spring.AutowireMode;
 
 @Path("/geocode")
-@Autowire(mode=AutowireMode.BY_NAME)
 public class GeocoderServer {
     
-    @Autowired
-    @Qualifier("geocoder")
     private Geocoder geocoder;
     
     public void setGeocoder(Geocoder geocoder) {
