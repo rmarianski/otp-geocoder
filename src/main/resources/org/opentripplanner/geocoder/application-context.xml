@@ -48,14 +48,19 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="geocoderAlternating" class="org.opentripplanner.geocoder.AlternatingGeocoder">
+	<bean id="geocoderMultiple"
+		class="org.opentripplanner.geocoder.GeocoderMultipleResultsStubImpl">
+		<constructor-arg ref="broadway" />
+	</bean>
+
+	<bean id="geocoderAlternatingSingle" class="org.opentripplanner.geocoder.AlternatingGeocoder">
 		<constructor-arg ref="lafayette" />
 		<constructor-arg ref="wallstreet" />
 	</bean>
 
-	<bean id="geocoderMultiple"
-		class="org.opentripplanner.geocoder.GeocoderMultipleResultsStubImpl">
-		<constructor-arg ref="broadway" />
+	<bean id="geocoderAlternatingMultiple" class="org.opentripplanner.geocoder.AlternatingGeocoder">
+		<constructor-arg ref="lafayette" />
+		<constructor-arg ref="geocoderMultiple" />
 	</bean>
 
 	<bean id="geocoderUSCSV" class="org.opentripplanner.geocoder.GeocoderUSCSV">
