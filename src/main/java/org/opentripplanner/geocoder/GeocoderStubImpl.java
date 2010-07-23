@@ -1,5 +1,7 @@
 package org.opentripplanner.geocoder;
 
+import java.util.Arrays;
+
 public class GeocoderStubImpl implements Geocoder {
     
     private double lat;
@@ -17,8 +19,9 @@ public class GeocoderStubImpl implements Geocoder {
     }
 
     @Override
-    public GeocoderResult geocode(String address) {
-        return new GeocoderResult(lat, lng, description);
+    public GeocoderResults geocode(String address) {
+        GeocoderResult result = new GeocoderResult(lat, lng, description);
+        return new GeocoderResults(Arrays.asList(result));
     }
 
     

@@ -9,33 +9,34 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.opentripplanner.geocoder.Geocoder;
-import org.opentripplanner.geocoder.GeocoderResult;
+import org.opentripplanner.geocoder.GeocoderResults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.sun.jersey.api.spring.Autowire;
+import com.sun.jersey.api.spring.AutowireMode;
 
 @Path("/geocode")
-@Autowire
+@Autowire(mode=AutowireMode.BY_NAME)
 public class GeocoderServer {
     
+    @Autowired
+    @Qualifier("geocoder")
     private Geocoder geocoder;
     
-    @Autowired
     public void setGeocoder(Geocoder geocoder) {
         this.geocoder = geocoder;
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public GeocoderResult geocode(@QueryParam("address") String address) {
+    public GeocoderResults geocode(@QueryParam("address") String address) {
         if (address == null) {
             throw new WebApplicationException(Response.status(400)
                     .entity("no address")
                     .type("text/plain")
                     .build());
         }
-        GeocoderResult result = null;
-        result = geocoder.geocode(address);
-        return result;
+        return geocoder.geocode(address);
     }
 }

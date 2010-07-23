@@ -15,7 +15,7 @@ public class AlternatingGeocoder implements Geocoder {
     }
 
     @Override
-    public GeocoderResult geocode(String address) {
+    public GeocoderResults geocode(String address) {
         useFirstGeocoder = !useFirstGeocoder;
         Geocoder g = useFirstGeocoder ? geocoder1 : geocoder2;
         return g.geocode(address);

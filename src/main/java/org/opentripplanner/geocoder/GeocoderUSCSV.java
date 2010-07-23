@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -28,7 +30,8 @@ public class GeocoderUSCSV implements Geocoder {
     /* (non-Javadoc)
      * @see org.opentripplanner.api.geocode.Geocoder#geocode(java.lang.String)
      */
-    public GeocoderResult geocode(String address) {
+    @Override
+    public GeocoderResults geocode(String address) {
         assert geocoderBaseUrl != null;
         
         String content = null;        
@@ -42,6 +45,7 @@ public class GeocoderUSCSV implements Geocoder {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
+                sb.append("\n");
             }
             reader.close();
             content = sb.toString();
@@ -51,22 +55,32 @@ public class GeocoderUSCSV implements Geocoder {
             return noGeocoderResult("communication error");
         }
         
+        Collection<GeocoderResult> results = new ArrayList<GeocoderResult>();
         try {
-            String firstLine = content.split("\n")[0];
-            String[] fields = firstLine.split(",", 3);
-            double lat = Double.parseDouble(fields[0]);
-            double lng = Double.parseDouble(fields[1]);
-            String description = fields[2];
-            return new GeocoderResult(lat, lng, description);
+            String[] lines = content.split("\n");
+            for (String line : lines) {
+                if (line.trim().isEmpty()) continue;
+                GeocoderResult result = parseGeocoderResult(line);
+                results.add(result);
+            }
         } catch (NumberFormatException e) {
             return noGeocoderResult(content);
         } catch (ArrayIndexOutOfBoundsException e) {
             return noGeocoderResult(content);
         }
+        return new GeocoderResults(results);
     }
 
-    private GeocoderResult noGeocoderResult(String content) {
+    private GeocoderResult parseGeocoderResult(String line) {
+        String[] fields = line.split(",", 3);
+        double lat = Double.parseDouble(fields[0]);
+        double lng = Double.parseDouble(fields[1]);
+        String description = fields[2];
+        return new GeocoderResult(lat, lng, description);
+    }
+
+    private GeocoderResults noGeocoderResult(String content) {
         // use the response as the error message returned back
-        return new GeocoderResult(content);
+        return new GeocoderResults(content);
     }
 }

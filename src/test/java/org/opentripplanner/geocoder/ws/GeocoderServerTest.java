@@ -2,12 +2,15 @@ package org.opentripplanner.geocoder.ws;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import javax.ws.rs.WebApplicationException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.opentripplanner.geocoder.Geocoder;
 import org.opentripplanner.geocoder.GeocoderResult;
+import org.opentripplanner.geocoder.GeocoderResults;
 
 public class GeocoderServerTest {
 
@@ -32,15 +35,19 @@ public class GeocoderServerTest {
         
         geocoderServer.setGeocoder(new Geocoder() {
             @Override
-            public GeocoderResult geocode(String address) {
-                return new GeocoderResult(lat, lng, description);
+            public GeocoderResults geocode(String address) {
+                GeocoderResult result = new GeocoderResult(lat, lng, description);
+                return new GeocoderResults(Arrays.asList(result));
             }
         });
         
-        GeocoderResult result = geocoderServer.geocode("121 elm street");
-        assertEquals("description matches", description, result.getDescription());
-        assertEquals(lat, result.getLat(), 0.001);
-        assertEquals(lng, result.getLng(), 0.001);
+        GeocoderResults results = geocoderServer.geocode("121 elm street");
+        for (GeocoderResult result : results.getResults()) {
+            // should only have one result
+            assertEquals("description matches", description, result.getDescription());
+            assertEquals(lat, result.getLat(), 0.001);
+            assertEquals(lng, result.getLng(), 0.001);
+        }
     }
     
     @Test
@@ -48,12 +55,12 @@ public class GeocoderServerTest {
         final String error = "uh oh";
         geocoderServer.setGeocoder(new Geocoder() {
             @Override
-            public GeocoderResult geocode(String address) {
-                return new GeocoderResult(error);
+            public GeocoderResults geocode(String address) {
+                return new GeocoderResults(error);
             }
         });
 
-        GeocoderResult result = geocoderServer.geocode("121 elm street");
+        GeocoderResults result = geocoderServer.geocode("121 elm street");
         assertEquals("error returned", error, result.getError());
     }
 }
