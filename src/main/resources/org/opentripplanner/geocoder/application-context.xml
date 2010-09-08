@@ -68,6 +68,10 @@
 	</bean>
 	
 	<bean id="geocoderGoogle" class="org.opentripplanner.geocoder.google.GoogleGeocoder" />
+	
+	<bean id="geocoderYahoo" class="org.opentripplanner.geocoder.yahoo.YahooGeocoder">
+	    <property name="appId" value="yourappid" />
+	</bean>
 
 	<bean id="geocoderServer" class="org.opentripplanner.geocoder.ws.GeocoderServer">
 		<property name="geocoder" ref="geocoderUSCSV" />
