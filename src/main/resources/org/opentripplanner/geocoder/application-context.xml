@@ -67,6 +67,8 @@
 		<property name="geocoderBaseUrl" value="http://rpc.geocoder.us/service/csv" />
 	</bean>
 	
+	<bean id="geocoderGoogle" class="org.opentripplanner.geocoder.google.GoogleGeocoder" />
+
 	<bean id="geocoderServer" class="org.opentripplanner.geocoder.ws.GeocoderServer">
 		<property name="geocoder" ref="geocoderUSCSV" />
 	</bean>
